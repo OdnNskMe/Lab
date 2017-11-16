@@ -46,19 +46,18 @@ public:
 		colorBrush.g = b;
 		colorBrush.b = c;
 	}
-	virtual void draw() = 0;
+	virtual void draw(HWND* hwnd) = 0;
 };
 
 
 class ellipse: public figure
 {
-public:
-	
-	void draw(HWND* hwnd, int x, int y, int left, int bottom)
+public:	
+	void draw(HWND* hwnd)
 	{	
 		POINT pt;
 		HDC hdc = GetDC(*hwnd);
-		Ellipse(hdc, 40, 40, left - 40, bottom - 40);		
+		Ellipse(hdc, point1.x, point1.y, point2.x, point2.y);		
 	}	
 };
 
@@ -82,8 +81,9 @@ void main()
 		GetClientRect(hwnd, &rt);
 		std::cout << "Window " << rt.right <<" x " << rt.bottom;
 		TextOutA(hdc, 10, 20, buf, strlen(buf));
-		
-		ell->draw(&hwnd, 40, 40, rt.right - 500, rt.bottom - 40);		
+		ell->setX1y1(40, 40);
+		ell->setX2y2(100, 100);
+		ell->draw(&hwnd);		
 
 	} while (_getch() != 27);
 	SelectPen(hdc, hOldPen);
