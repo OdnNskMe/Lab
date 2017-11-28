@@ -17,79 +17,150 @@
 #include <locale.h>
 #include <string.h>
 #include <iostream>
+#include <stdio.h>
+#include <malloc.h>
+#include<limits.h>
 
 
-void inputStr(char * str, int n)
+
+void input(char *buf, int *size,int N) 
 {
-	printf("¬ведите данные\n");
-	fgets(str, n, stdin);
+	printf("¬ведите  набор данных\n");
+	fgets(buf,N, stdin);
+	int d = strlen(buf);
+	*size = strlen(buf);
 }
 
-void outputStr(char * str)
+int makeNumber(char *buf, int size, int *sizeNumber) 
 {
-	char   tempStr[256] = "";
-	int    num = 0;
-
-	while (1)
+	int num = 0;
+	for (int i = 0; i<size && isdigit(buf[i]); i++) 
 	{
-		if (isalpha(*str))
+		num *= 10;
+		num += (int)(buf[i] - '0');
+		(*sizeNumber)++;
+		if (num>INT_MAX / 10)break;
+	}
+	return num;
+}
+
+void write(char *buf, int size, char *p) 
+{
+	for (int i = 0; i<size; i++) 
+	{
+		if (isdigit(buf[i]))
 		{
-			num = 0;
-			sprintf(tempStr + strlen(tempStr), "'%c'", *str);
+			int sizeNumber = 0;
+			*p = '\0';
+			p++;
+			int *n = (int*)p;
+			*n = makeNumber(&buf[i], size - i, &sizeNumber);
+			n++;
+			p = (char*)n;
+			i += sizeNumber - 1;
 		}
-		else if (isdigit(*str))
+
+		else 
 		{
-			while (isdigit(*str))
-			{
-				num *= 10;
-				num += *str++ - '0';
-			}
-			sprintf(tempStr + strlen(tempStr), "'\\0'%d", num);
-			str--;
+			*p = buf[i];
+			p++;
 		}
-		if (!*str++)
+
+	}
+
+	*p++ = '\0';
+	*p = '\0';
+
+}
+
+void read(char *p) 
+{
+	while ((*p != '\0') || (*(p + 1) != '\0')) 
+	{
+		if (*p == '\0') 
 		{
-			sprintf(tempStr + strlen(tempStr), "'\\0''\\0'");
-			break;
+			p++;
+			int *n = (int*)p;
+			printf("%d", *n);
+			n++;
+			p = (char*)n;
+		}
+
+		else 
+		{
+			printf("%c", *p);
+			p++;
 		}
 	}
-	puts(tempStr);
+	printf("\n");
+}
 
-	char   tempStr2[256] = "";
-	char temp[256] = "";
-	while (1)
+void output(char *p) 
+{
+	while ((*p != '\0') || (*(p + 1) != '\0')) 
 	{
-		if (isalpha(*tempStr))
+		if (*p == '\0') 
 		{
-			sprintf(tempStr2 + strlen(tempStr2), "'%c'", *tempStr);
+			printf("'\\0', ");
+			p++;
+			int *n = (int*)p;
+			printf("'%d', ", *n);
+			n++;
+			p = (char*)n;
 		}
-
-		else if (*tempStr=='\0')
+		else 
 		{
-			(*tempStr)++;
-			while (isdigit(*tempStr))
-			{
-				_itoa(*tempStr, temp, 10);
-			}
-			sprintf(tempStr + strlen(tempStr), "'\\0'%d", temp);
-			(*tempStr)--;
-		}
-		if (!(*tempStr)++)
-		{
-			sprintf(tempStr + strlen(tempStr), "'\\0''\\0'");
-			break;
+			printf("'%c', ", *p);
+			p++;
 		}
 	}
+
+	printf("'\\0', '\\0' \n\n");
+
 }
 
-int main()
+int main() 
 {
-	system("color F0 ");
-	setlocale(LC_ALL, "Russian");
-	const int N = 81;
-	char strstr[N];
-	inputStr(strstr,N);
-	outputStr(strstr);
 
-	return 0;
+	setlocale(LC_ALL, "rus");
+	const int N = 10;
+	char *p = (char*)malloc(N * sizeof(int));
+	char buf[N];
+	int size = 0;
+	input(buf,&size,N);
+	write(buf, size, p);
+	output(p);
+	read(p);
+	_getch();
+
 }
+
+//void outputStr(char* str, char tempStr)
+//{	
+//	int    num = 0;
+//
+//	while (1)
+//	{
+//		if (isalpha(*str))
+//		{
+//			num = 0;
+//			sprintf(&tempStr + strlen(&tempStr), "'%c',", *str);			
+//		}
+//		else if (isdigit(*str))
+//		{
+//			while (isdigit(*str))
+//			{
+//				num *= 10;
+//				num += *str++ - '0';
+//			}
+//			sprintf(&tempStr + strlen(&tempStr), "'\\0'%d", num);			
+//			str--;
+//		}
+//		if (!*str++)
+//		{
+//			sprintf(&tempStr + strlen(&tempStr), "'\\0''\\0'");			
+//			break;
+//		}
+//	}
+//	puts(&tempStr);
+//}
