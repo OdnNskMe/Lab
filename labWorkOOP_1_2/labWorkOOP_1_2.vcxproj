@@ -114,7 +114,8 @@
     <ClCompile Include="labWorkOOP_1_2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="labWorkOOP_1_2.h" />
+    <ClInclude Include="labWorkOOP_1_2_figure.h" />
+    <ClInclude Include="labWorkOOP_1_2_geometry.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

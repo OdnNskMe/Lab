@@ -20,7 +20,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="labWorkOOP_1_2.h">
+    <ClInclude Include="labWorkOOP_1_2_figure.h">
+      <Filter>Файлы исходного кода</Filter>
+    </ClInclude>
+    <ClInclude Include="labWorkOOP_1_2_geometry.h">
       <Filter>Файлы исходного кода</Filter>
     </ClInclude>
   </ItemGroup>

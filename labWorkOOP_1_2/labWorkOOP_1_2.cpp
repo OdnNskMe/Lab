@@ -1,10 +1,4 @@
-//#include <Windows.h>
-//#include <windowsx.h>
-//#include <stdio.h>
-//#include <conio.h>
-//#include <iostream>
-
-#include "labWorkOOP_1_2.h"
+#include "labWorkOOP_1_2_geometry.h"
 
 void main()
 {
@@ -16,54 +10,56 @@ void main()
 		quit ='q'
 	};
 
-	bool gameOver = false;
-
-	HWND hwnd = GetConsoleWindow();
-	HDC hdc = GetDC(hwnd);
-	RECT rt;	
+	bool gameOver = false;	
 
 	ellipse ob_ellipse;
-	ellipse* ell = &ob_ellipse;
-
-	circle ob_circle;
-	circle* cir = &ob_circle;
-	
-	
-	SetBkColor(hdc, RGB(0, 0, 0));
-
-	
+	circle ob_circle;	
+		
 	do
 	{
+		HWND hwnd = GetConsoleWindow();
+		HDC hdc = GetDC(hwnd);
+		RECT rt;
 		GetClientRect(hwnd, &rt);
+		SetBkColor(hdc, RGB(0, 0, 0));
 		if (_kbhit()) 
 		{
 			switch (_getch())
 			{
 				case f_Ellipse:
-				{
-					ell->setStart(40, 40);
-					ell->setEllipse(100, 200);
-					ell->setColorPen(255, 0, 0);
-					ell->draw(&hdc);
+				{					
+					ob_ellipse.setStart(40, 40);
+					ob_ellipse.setEllipse(100, 200);
+					ob_ellipse.setColorPen(255, 0, 0);
+					ob_ellipse.setBrush(true);
+					ob_ellipse.setColorBrush(0, 200, 200);
+					ob_ellipse.draw(&hdc);
 					break;
 				}
 				
 				case f_circle:
 				{
-					cir->setStart(200, 200);
-					cir->setCirle(50);
-					cir->setColorPen(0, 255, 0);
-					cir->draw(&hdc);
+					ob_circle.setStart(200, 200);
+					ob_circle.setCirle(50);
+					ob_circle.setColorPen(0, 255, 0);
+					ob_circle.setBrush(false);
+					ob_circle.setColorBrush(0, 200, 200);
+					ob_circle.draw(&hdc);
+					break;
+				}
+				case clear:
+				{
+					system("cls");					
 					break;
 				}
 				case quit:
 				{
-					gameOver = true;
+					gameOver = true;					
 					break;
 				}
 			}
 		}
+		ReleaseDC(hwnd, hdc);
 	} while (gameOver!=true);
 	
-	ReleaseDC(hwnd, hdc);
 }

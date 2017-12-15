@@ -21,118 +21,109 @@
 #include <malloc.h>
 #include<limits.h>
 
-
-
 void input(char *buf, int *size,int N) 
 {
-	printf("¬ведите  набор данных\n");
+	printf("¬ведите строку букв и цифр\n");
 	fgets(buf,N, stdin);
-	int d = strlen(buf);
 	*size = strlen(buf);
 }
 
-int makeNumber(char *buf, int size, int *sizeNumber) 
+int stringToDigit(char *buf, int size, int *sizeNumber) 
 {
-	int num = 0;
+	int digit = 0;
 	for (int i = 0; i<size && isdigit(buf[i]); i++) 
 	{
-		num *= 10;
-		num += (int)(buf[i] - '0');
+		digit *= 10;
+		digit += (int)(buf[i] - '0');
 		(*sizeNumber)++;
-		if (num>INT_MAX / 10)break;
+		if (digit>INT_MAX / 10)break;
 	}
-	return num;
+	return digit;
 }
 
-void write(char *buf, int size, char *p) 
+void convert(char *buf, int size, char *str)
 {
 	for (int i = 0; i<size; i++) 
 	{
 		if (isdigit(buf[i]))
 		{
 			int sizeNumber = 0;
-			*p = '\0';
-			p++;
-			int *n = (int*)p;
-			*n = makeNumber(&buf[i], size - i, &sizeNumber);
+			*str = '\0';
+			str++;
+			int *n = (int*)str;
+			*n = stringToDigit(&buf[i], size - i, &sizeNumber);
 			n++;
-			p = (char*)n;
+			str = (char*)n;
 			i += sizeNumber - 1;
 		}
-
 		else 
 		{
-			*p = buf[i];
-			p++;
+			*str = buf[i];
+			str++;
 		}
-
 	}
-
-	*p++ = '\0';
-	*p = '\0';
+	*str++ = '\0';
+	*str = '\0';
 
 }
 
-void read(char *p) 
+void readConvert(char *str)
 {
-	while ((*p != '\0') || (*(p + 1) != '\0')) 
+	while ((*str != '\0') || (*(str + 1) != '\0'))
 	{
-		if (*p == '\0') 
+		if (*str == '\0')
 		{
-			p++;
-			int *n = (int*)p;
+			str++;
+			int *n = (int*)str;
 			printf("%d", *n);
 			n++;
-			p = (char*)n;
+			str = (char*)n;
 		}
-
 		else 
 		{
-			printf("%c", *p);
-			p++;
+			printf("%c", *str);
+			str++;
 		}
 	}
 	printf("\n");
 }
 
-void output(char *p) 
+void outputConvert(char *str)
 {
-	while ((*p != '\0') || (*(p + 1) != '\0')) 
+	while ((*str != '\0') || (*(str + 1) != '\0'))
 	{
-		if (*p == '\0') 
+		if (*str == '\0')
 		{
-			printf("'\\0', ");
-			p++;
-			int *n = (int*)p;
-			printf("'%d', ", *n);
-			n++;
-			p = (char*)n;
+			printf("'\\0'");
+			str++;
+			int *digit = (int*)str;
+			printf("'%d'", *digit);
+			digit++;
+			str = (char*)digit;
 		}
 		else 
 		{
-			printf("'%c', ", *p);
-			p++;
+			printf("'%c'", *str);
+			str++;
 		}
 	}
-
-	printf("'\\0', '\\0' \n\n");
-
+	printf("'\\0''\\0'\n");
 }
 
 int main() 
 {
-
+	system("color F0 ");
 	setlocale(LC_ALL, "rus");
-	const int N = 10;
-	char *p = (char*)malloc(N * sizeof(int));
-	char buf[N];
+	const int N = 20;
+	char *str = (char*)malloc(sizeof(int) * N);
+	char strBuf[N];
 	int size = 0;
-	input(buf,&size,N);
-	write(buf, size, p);
-	output(p);
-	read(p);
+	input(strBuf,&size,N);
+	convert(strBuf, size, str);
+	outputConvert(str);
+	readConvert(str);
 	_getch();
-
+	free(str);
 }
 
 //void outputStr(char* str, char tempStr)
